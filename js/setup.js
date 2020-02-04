@@ -41,6 +41,14 @@ var EYES_COLORS_MOCK = [
   'green',
 ];
 
+var FIREBALL_COLORS_MOCK = [
+  '#ee4830',
+  '#30a8ee',
+  '#5ce6c0',
+  '#e848d5',
+  '#e6e848',
+];
+
 var ESC_KEY = 'Escape';
 var ENTER_KEY = 'Enter';
 
@@ -101,6 +109,9 @@ var setupDialog = document.querySelector('.setup');
 var openSetupButton = document.querySelector('.setup-open');
 var closeSetupButton = setupDialog.querySelector('.setup-close');
 var setupInputName = setupDialog.querySelector('.setup-user-name');
+var wizardCoat = setupDialog.querySelector('.setup-wizard .wizard-coat');
+var wizardEyes = setupDialog.querySelector('.setup-wizard .wizard-eyes');
+var wizardFireball = setupDialog.querySelector('.setup-fireball-wrap');
 
 var onEscPressed = function (evt) {
   if ((evt.key === ESC_KEY) && (document.activeElement !== setupInputName)) {
@@ -142,4 +153,16 @@ closeSetupButton.addEventListener('keydown', function (evt) {
   if (evt.key === ENTER_KEY) {
     hideSetupWindow();
   }
+});
+
+wizardCoat.addEventListener('click', function () {
+  wizardCoat.style.fill = getRandomValueFromMock(COAT_COLORS_MOCK);
+});
+
+wizardEyes.addEventListener('click', function () {
+  wizardEyes.style.fill = getRandomValueFromMock(EYES_COLORS_MOCK);
+});
+
+wizardFireball.addEventListener('click', function () {
+  wizardFireball.style.backgroundColor = getRandomValueFromMock(FIREBALL_COLORS_MOCK);
 });
