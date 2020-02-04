@@ -157,12 +157,19 @@ closeSetupButton.addEventListener('keydown', function (evt) {
 
 wizardCoat.addEventListener('click', function () {
   wizardCoat.style.fill = getRandomValueFromMock(COAT_COLORS_MOCK);
+  setupDialog.querySelector('input[name="coat-color"]')
+    .value = wizardCoat.style.fill;
 });
 
 wizardEyes.addEventListener('click', function () {
   wizardEyes.style.fill = getRandomValueFromMock(EYES_COLORS_MOCK);
+  setupDialog.querySelector('input[name="eyes-color"]')
+    .value = wizardEyes.style.fill;
 });
 
 wizardFireball.addEventListener('click', function () {
-  wizardFireball.style.backgroundColor = getRandomValueFromMock(FIREBALL_COLORS_MOCK);
+  var color = getRandomValueFromMock(FIREBALL_COLORS_MOCK);
+  wizardFireball.style.backgroundColor = color;
+  setupDialog.querySelector('input[name="fireball-color"]')
+    .value = color;
 });
