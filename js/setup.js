@@ -41,6 +41,17 @@ var EYES_COLORS_MOCK = [
   'green',
 ];
 
+var FIREBALL_COLORS_MOCK = [
+  '#ee4830',
+  '#30a8ee',
+  '#5ce6c0',
+  '#e848d5',
+  '#e6e848',
+];
+
+var ESC_KEY = 'Escape';
+var ENTER_KEY = 'Enter';
+
 var getRandomValueFromMock = function (mock) {
   var lastIndex = mock.length - 1;
   return mock[Math.round(Math.random() * lastIndex)];
@@ -90,17 +101,75 @@ var renderWizards = function (players) {
   wizardList.appendChild(fragment);
 };
 
-var showSetupWindow = function () {
-  var setupDialog = document.querySelector('.setup');
-
-  setupDialog.classList.remove('hidden');
-
-  setupDialog.querySelector('.setup-similar')
-    .classList.remove('hidden');
-};
-
 var players = generatePlayers(PLAYERS_COUNT);
 
 renderWizards(players);
 
-showSetupWindow();
+var setupDialog = document.querySelector('.setup');
+var openSetupButton = document.querySelector('.setup-open');
+var closeSetupButton = setupDialog.querySelector('.setup-close');
+var setupInputName = setupDialog.querySelector('.setup-user-name');
+var wizardCoat = setupDialog.querySelector('.setup-wizard .wizard-coat');
+var wizardEyes = setupDialog.querySelector('.setup-wizard .wizard-eyes');
+var wizardFireball = setupDialog.querySelector('.setup-fireball-wrap');
+
+var onEscPressed = function (evt) {
+  if ((evt.key === ESC_KEY) && (document.activeElement !== setupInputName)) {
+    hideSetupWindow();
+  }
+};
+
+var showSetupWindow = function () {
+  setupDialog.classList.remove('hidden');
+  setupDialog.querySelector('.setup-similar')
+    .classList.remove('hidden');
+
+  document.addEventListener('keydown', onEscPressed);
+};
+
+var hideSetupWindow = function () {
+  setupDialog.classList.add('hidden');
+  setupDialog.querySelector('.setup-similar')
+    .classList.add('hidden');
+
+  document.removeEventListener('keydown', onEscPressed);
+};
+
+openSetupButton.addEventListener('click', function () {
+  showSetupWindow();
+});
+
+openSetupButton.addEventListener('keydown', function (evt) {
+  if (evt.key === ENTER_KEY) {
+    showSetupWindow();
+  }
+});
+
+closeSetupButton.addEventListener('click', function () {
+  hideSetupWindow();
+});
+
+closeSetupButton.addEventListener('keydown', function (evt) {
+  if (evt.key === ENTER_KEY) {
+    hideSetupWindow();
+  }
+});
+
+wizardCoat.addEventListener('click', function () {
+  wizardCoat.style.fill = getRandomValueFromMock(COAT_COLORS_MOCK);
+  setupDialog.querySelector('input[name="coat-color"]')
+    .value = wizardCoat.style.fill;
+});
+
+wizardEyes.addEventListener('click', function () {
+  wizardEyes.style.fill = getRandomValueFromMock(EYES_COLORS_MOCK);
+  setupDialog.querySelector('input[name="eyes-color"]')
+    .value = wizardEyes.style.fill;
+});
+
+wizardFireball.addEventListener('click', function () {
+  var color = getRandomValueFromMock(FIREBALL_COLORS_MOCK);
+  wizardFireball.style.backgroundColor = color;
+  setupDialog.querySelector('input[name="fireball-color"]')
+    .value = color;
+});
