@@ -9,20 +9,6 @@
   var wizardTemplate = document.querySelector('#similar-wizard-template')
     .content.querySelector('.setup-similar-item');
 
-  var generatePlayers = function (count) {
-    var players = [];
-
-    for (var i = 0; i < count; i++) {
-      players.push({
-        name: window.utility.getRandomValueFromMock(window.mocks.names) + ' ' + window.utility.getRandomValueFromMock(window.mocks.lastNames),
-        coatColor: window.utility.getRandomValueFromMock(window.mocks.coatColors),
-        eyesColor: window.utility.getRandomValueFromMock(window.mocks.eyesColors),
-      });
-    }
-
-    return players;
-  };
-
   var createWizardFromTemplate = function (wizard) {
     var wizardElement = wizardTemplate.cloneNode(true);
 
@@ -30,19 +16,19 @@
       .textContent = wizard.name;
 
     wizardElement.querySelector('.wizard-coat')
-      .style.fill = wizard.coatColor;
+      .style.fill = wizard.colorCoat;
 
     wizardElement.querySelector('.wizard-eyes')
-      .style.fill = wizard.eyesColor;
+      .style.fill = wizard.colorEyes;
 
     return wizardElement;
   };
 
-  var renderWizards = function (players) {
+  var renderWizards = function (players, count) {
     if (players) {
       similarSection.classList.remove('hidden');
 
-      players.forEach(function (player) {
+      players.slice(0, count).forEach(function (player) {
         fragment.append(createWizardFromTemplate(player));
       });
 
@@ -50,5 +36,10 @@
     }
   };
 
-  renderWizards(generatePlayers(PLAYERS_COUNT));
+  var onSuccess = function (response) {
+    renderWizards(response, PLAYERS_COUNT);
+  };
+
+  window.backend.load(onSuccess);
+
 })();
