@@ -1,45 +1,56 @@
 'use strict';
 
 (function () {
-  var PLAYERS_COUNT = 4;
+  var coatColor;
+  var eyesColor;
+  var wizards = [];
 
-  var similarSection = document.querySelector('.setup-similar');
-  var wizardList = similarSection.querySelector('.setup-similar-list');
-  var fragment = document.createDocumentFragment();
-  var wizardTemplate = document.querySelector('#similar-wizard-template')
-    .content.querySelector('.setup-similar-item');
+  window.backend.load(function (response) {
+    wizards = response;
+    window.render(wizards);
+  });
 
-  var createWizardFromTemplate = function (wizard) {
-    var wizardElement = wizardTemplate.cloneNode(true);
+  var getRank = function (wizard) {
+    var rank = 0;
 
-    wizardElement.querySelector('.setup-similar-label')
-      .textContent = wizard.name;
+    if (wizard.colorCoat === coatColor) {
+      rank += 2;
+    }
+    if (wizard.colorEyes === eyesColor) {
+      rank += 1;
+    }
 
-    wizardElement.querySelector('.wizard-coat')
-      .style.fill = wizard.colorCoat;
-
-    wizardElement.querySelector('.wizard-eyes')
-      .style.fill = wizard.colorEyes;
-
-    return wizardElement;
+    return rank;
   };
 
-  var renderWizards = function (players, count) {
-    if (players) {
-      similarSection.classList.remove('hidden');
-
-      players.slice(0, count).forEach(function (player) {
-        fragment.append(createWizardFromTemplate(player));
-      });
-
-      wizardList.append(fragment);
+  var namesComparator = function (left, right) {
+    if (left > right) {
+      return 1;
+    } else if (left < right) {
+      return -1;
+    } else {
+      return 0;
     }
   };
 
-  var onSuccess = function (response) {
-    renderWizards(response, PLAYERS_COUNT);
+  var updateWizards = function () {
+    window.render(wizards.sort(function (left, right) {
+      var rankDiff = getRank(right) - getRank(left);
+      if (rankDiff === 0) {
+        rankDiff = namesComparator(left.name, right.name);
+      }
+      return rankDiff;
+    }));
   };
 
-  window.backend.load(onSuccess);
+  window.wizardSettings.onEyesChange = function (color) {
+    eyesColor = color;
+    updateWizards();
+  };
+
+  window.wizardSettings.onCoatChange = function (color) {
+    coatColor = color;
+    updateWizards();
+  };
 
 })();

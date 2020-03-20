@@ -7,27 +7,23 @@
   var wizardFireball = form.querySelector('.setup-fireball-wrap');
 
   wizardCoat.addEventListener('click', function () {
-    wizardCoat.style.fill = window.utility
-      .getRandomValueFromMock(window.mocks.coatColors);
-
-    form.querySelector('input[name="coat-color"]')
-      .value = wizardCoat.style.fill;
+    var color = window.utility.getRandomValueFromMock(window.mocks.coatColors);
+    wizardCoat.style.fill = color;
+    form.querySelector('input[name="coat-color"]').value = color;
+    wizard.onCoatChange(color);
   });
 
   wizardEyes.addEventListener('click', function () {
-    wizardEyes.style.fill = window.utility
-      .getRandomValueFromMock(window.mocks.eyesColors);
-
-    form.querySelector('input[name="eyes-color"]')
-      .value = wizardEyes.style.fill;
+    var color = window.utility.getRandomValueFromMock(window.mocks.eyesColors);
+    wizardEyes.style.fill = color;
+    form.querySelector('input[name="eyes-color"]').value = color;
+    wizard.onEyesChange(color);
   });
 
   wizardFireball.addEventListener('click', function () {
     var color = window.utility.getRandomValueFromMock(window.mocks.fireballColors);
     wizardFireball.style.backgroundColor = color;
-
-    form.querySelector('input[name="fireball-color"]')
-      .value = color;
+    form.querySelector('input[name="fireball-color"]').value = color;
   });
 
   form.addEventListener('submit', function (evt) {
@@ -36,5 +32,12 @@
       window.dialog.hide();
     });
   });
+
+  var wizard = {
+    onEyesChange: function () {},
+    onCoatChange: function () {},
+  };
+
+  window.wizardSettings = wizard;
 
 })();
