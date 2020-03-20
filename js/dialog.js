@@ -96,4 +96,9 @@
     document.addEventListener('mouseup', onMouseUp);
   });
 
+  window.dialog = {
+    show: showSetupWindow,
+    hide: hideSetupWindow,
+  };
+
 })();
