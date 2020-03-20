@@ -3,6 +3,7 @@
 (function () {
   var ESC_KEY = 'Escape';
   var ENTER_KEY = 'Enter';
+  var DEBOUNCE_INTERVAL = 500;
 
   var getRandomValueFromMock = function (mock) {
     var lastIndex = mock.length - 1;
@@ -24,9 +25,24 @@
     }
   };
 
+  var debounce = function (cb) {
+    var lastTimeout = null;
+
+    return function () {
+      var parameters = arguments;
+      if (lastTimeout) {
+        window.clearTimeout(lastTimeout);
+      }
+      lastTimeout = window.setTimeout(function () {
+        cb.apply(null, parameters);
+      }, DEBOUNCE_INTERVAL);
+    };
+  };
+
   window.utility = {
     getRandomValueFromMock: getRandomValueFromMock,
     onEscPressed: onEscapePressed,
     onEnterPressed: onEnterPressed,
+    debounce: debounce,
   };
 })();

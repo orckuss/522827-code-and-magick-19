@@ -43,14 +43,16 @@
     }));
   };
 
-  window.wizardSettings.onEyesChange = function (color) {
-    eyesColor = color;
-    updateWizards();
-  };
+  window.wizardSettings.onEyesChange = window.utility
+    .debounce(function (color) {
+      eyesColor = color;
+      updateWizards();
+    });
 
-  window.wizardSettings.onCoatChange = function (color) {
-    coatColor = color;
-    updateWizards();
-  };
+  window.wizardSettings.onCoatChange = window.utility
+    .debounce(function (color) {
+      coatColor = color;
+      updateWizards();
+    });
 
 })();
